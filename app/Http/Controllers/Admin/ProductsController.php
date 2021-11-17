@@ -31,6 +31,11 @@ class ProductsController extends Controller
 
     public function store(ProductRequest $request)
     {
+        if ($request->file('image') == ""){
+            return redirect(route('admin.products.create'))
+            ->with('status', '写真を登録してください。');
+        }
+
         $image = $this->saveImage($request->file('image'));
 
         $product = new Product();
@@ -73,13 +78,15 @@ class ProductsController extends Controller
 
     public function update(ProductRequest $request, $id)
     {
-
-        $image = $this->saveImage($request->file('image'));
-
         $product = Product::find($id);
+
+        if (!$request->file('image') == ""){
+            $image = $this->saveImage($request->file('image'));
+            $product->image = $image;
+        }
+
         $product->genre_id       = $request['genre'];
         $product->name           = $request['name'];
-        $product->image          = $image;
         $product->introduction   = $request['introduction'];
         $product->price          = $request['price'];
         $product->is_active      = $request['is_active'];

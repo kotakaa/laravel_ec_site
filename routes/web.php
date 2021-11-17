@@ -19,6 +19,7 @@ Route::group([ 'as' => 'user.', 'middleware' => 'auth:user', 'namespace' => 'Use
     Route::get('/home', 'HomeController@index')->name('home');
     Route::resource('/users', 'UserController', ['only' => ['edit', 'update', 'destroy']]);
     Route::get('/products/{product}', 'ProductsController@show')->name('products.show');
+    Route::get('/products/genre_search/{genre}', 'ProductsController@genreSearch')->name('products.genre_search');
     Route::post('/cart_items/all_destroy', 'CartItemsController@allDestroy')->name('cart_items.all_destroy');
     Route::resource('/cart_items', 'CartItemsController', ['only' => ['index', 'store', 'update', 'destroy']]);
     Route::resource('/addresses', 'AddressesController', ['only' => ['index', 'store', 'edit', 'update', 'destroy']]);
