@@ -29,9 +29,11 @@ class ProductsController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
+        $reviews = $product->reviews;
         $tax_price = 1.10;
         return view('user.products.show')
             ->with('product', $product)
+            ->with('reviews', $reviews)
             ->with('tax_price', $tax_price);
     }
 

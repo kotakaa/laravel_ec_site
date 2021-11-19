@@ -1,11 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">{{ $product->name }}の詳細ページ</div>
+                <div class="panel-heading">
+                    {{ $product->name }}の詳細ページ
+                    <div style="display: flex; justify-content: flex-end;">
+                        <a href="{{ route('user.products.reviews.create', [$product->id]) }}" class="btn btn-success" >口コミを書く</a>
+                    </div>
+                </div>
 
                 <div class="panel-body">
                     @if (session('status'))
@@ -65,8 +71,62 @@
                         </form>
                     @endif
                 </div>
+
+                <div style="margin-top: 5rem;">
+                    <h4 style="margin-left: 1rem;">口コミ一覧</h4>
+                    <table class="table" style="width: 30rem; margin-left: 1rem;">
+                        @foreach($reviews as $review) 
+                        <tr>
+                            <td>
+                                <img src="/images/user-image.png" style="width: 5rem;">
+                                <p style="font-size: 1rem;">{{ $review->user->name }}</p>
+                            </td>
+                            <td>
+                                <div id="star_{{ $review->id }}" class="star"></div>
+                                <script type="module">
+                                    $('#star_{{ $review->id }}').empty();
+                                    $('#star_{{ $review->id }}').raty({
+                                        starOff:  '/images/star-off.png',
+                                        starOn : '/images/star-on.png',
+                                        starHalf: '/images/star-half.png',
+                                        half: true,
+                                        readOnly: true,
+                                        score: '{{ $review->rate }}',
+                                        size: 20,
+                                    }); 
+                                </script>
+                                {{ $review->comment }}
+                            </td>
+                            @if ($review->user->id == Auth::user()->id)
+                                <td>
+                                    <form action="{{ route('user.products.reviews.destroy', [$product->id,$review->id]) }}" method="post">
+                                        {{ csrf_field() }}
+                                        <input name="_method" type="hidden" value="DELETE">
+                                        <input type="submit" value="削除する">
+                                    </form>
+                                </td>
+                            @endif
+                        </tr>
+                        @endforeach
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+
+
+
+{{-- <script>
+    window.onload = function(){
+        $('#star_{{ $review->id }}').raty({
+            starOff:  '/images/star-off.png',
+            starOn : '/images/star-on.png',
+            starHalf: '/images/star-half.png',
+            half: true,
+            readOnly: true,
+            score: '3',
+        });
+    };
+</script> --}}

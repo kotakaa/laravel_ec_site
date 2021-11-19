@@ -35,7 +35,6 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\CartItem');
     }
 
-
     public function addresses()
     {
         return $this->hasMany('App\Models\Address');
@@ -44,5 +43,10 @@ class User extends Authenticatable
     public function orders()
     {
         return $this->hasMany('App\Models\Order');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany('App\Models\Review');
     }
 }

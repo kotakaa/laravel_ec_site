@@ -26,6 +26,7 @@ Route::group([ 'as' => 'user.', 'middleware' => 'auth:user', 'namespace' => 'Use
     Route::post('/orders/confirm', 'OrdersController@confirm')->name('orders.confirm');
     Route::get('/orders/thanks', 'OrdersController@thanks')->name('orders.thanks');
     Route::resource('/orders', 'OrdersController', ['only' => ['index', 'show', 'create', 'store']]);
+    Route::resource('products.reviews', 'ReviewsController', ['only' => ['create', 'store', 'destroy']]);
 });
 
 Route::prefix('admin')
